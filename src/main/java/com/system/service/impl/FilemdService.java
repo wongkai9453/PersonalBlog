@@ -19,15 +19,16 @@ import java.util.List;
  */
 @Service
 public class FilemdService implements IFilemdService {
-    private static SqlSessionFactory sqlSessionFactory;
-    private SqlSession sqlSession;
     @Resource
     private FilemdMapper filemdMapper;
-
     @Override
     public int insert(Filemd record) {
-        int result;
-        result = filemdMapper.insert(record);
+        int result =0;
+        try {
+            result = filemdMapper.insert(record);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return result;
     }
@@ -35,5 +36,17 @@ public class FilemdService implements IFilemdService {
     @Override
     public List<Filemd> fileList(Long userId) {
         return filemdMapper.fileList(userId);
+    }
+
+    /**
+     * 功能描述: 
+     * @param: 根据文件id查询信息
+     * @return: com.system.bean.Filemd
+     * @auther: wk
+     * @date: 2020/5/12 0012 16:33
+     */
+    @Override
+    public Filemd queryFilemed(String fileid) throws Exception {
+        return filemdMapper.selectByPrimaryKey(fileid);
     }
 }

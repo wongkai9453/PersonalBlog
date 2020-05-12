@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<div th:replace="common/common_html :: headtop"></div>
+</head>
+
+<body>
+<!-- WRAPPER -->
+<div id="wrapper">
+	<!-- NAVBAR -->
+
+	<div th:replace="common/common_html :: sidetree"></div>
+
+	<div th:replace="common/common_html :: leftmenu"></div>
+
+
+
+	<div class="main">
+
+
+		<form class="form-auth-small" action="index.php" th:action="@{/addFile}" method="post">
+			<div style="height:10px"></div>
+			<div style="text-align:center;">
+				<input type="text" autocomplete="off" id = "filename" name = "filename" maxlength="100"  style="width: 95%;height:40px">
+			</div>
+			<div style="height:10px"></div>
+			<div class="clearfix"></div>
+			<div id="test-editor">
+				<textarea style="display:none;" id = "filecontent" name = "filecontent"></textarea>
+			</div>
+			<div class="clearfix"></div>
+
+
+		</form>
+	</div>
+
+
+
+
+</div>
+
+
+<script type="text/javascript">
+	$(function() {
+		var editor = editormd("test-editor", {
+			width  : "95%",
+			height : "730",
+			path   : roolpath+"editormd/lib/"
+		});
+	});
+
+
+</script>
+</body>
+
+</html>

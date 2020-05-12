@@ -3,17 +3,16 @@ package com.system.controller;
 import com.system.bean.Filemd;
 import com.system.service.IFilemdService;
 import com.system.util.FileCreate;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @ClassName FilemdController
@@ -30,8 +29,10 @@ public class FilemdController {
 
     @RequestMapping(value = "fileList")
     @ResponseBody
-    public List<Filemd> fileList(Long userid){
-        return iFilemdService.fileList(userid);
+    public List<Filemd> fileList(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        String userid = String.valueOf(session.getAttribute("userId"));
+        return iFilemdService.fileList(Long.valueOf(userid));
     }
 
     /**
@@ -46,24 +47,56 @@ public class FilemdController {
         return "file/editormd";
     }
 
+    /**
+     * 功能描述: 
+     * @param: 发布博客
+     * @return: java.lang.String
+     * @auther: wk
+     * @date: 2020/5/12 0012 11:56
+     */
     @PostMapping(value = "/addFile")
     public String addFile(Filemd filemd){
         System.out.println(filemd.getFilecontent());
         String dates = String.valueOf(System.currentTimeMillis());//当前时间
         String namepath = "/"+filemd.getUserId()+"/"+dates+".md";//文件名
         String fileContent = filemd.getFilecontent();//文件内容
-
-        String fileconten = filemd.getFilecontent().substring(0,50);
+        String fileconten = "";
+        if(fileContent.length()<50){
+            fileconten = fileContent;
+        }else {
+            fileconten = filemd.getFilecontent().substring(0,50);
+        }
         filemd.setFilecontent(fileconten.replaceAll("[^\\u4e00-\\u9fa5]", "")); // 截取文件内容前五十个汉字
         filemd.setFileid(UUID.randomUUID().toString().replace("-", "").toLowerCase()); //生成uuId
         filemd.setFilepath(namepath);//文件路径
         filemd.setCreatetime(new Date());
         try {
-            FileCreate.touchFile(namepath,fileContent);
-            int ss = iFilemdService.insert(filemd);
+            boolean touchFile = FileCreate.touchFile(namepath,fileContent);
+            if(touchFile==true){
+                iFilemdService.insert(filemd);
+            }
+
         } catch (IOException e) {
+            FileCreate.deleteFile(namepath);
             e.printStackTrace();
         }
         return "redirect:/main";
+    }
+
+    @GetMapping(value = "seach/{fileid}")
+    public String seachFile(@PathVariable("fileid") String fileid){
+        Filemd filemd = new Filemd();
+        Map<String,String> map = new HashMap<>();
+        try {
+            filemd = iFilemdService.queryFilemed(fileid);
+            String namepath = filemd.getFilepath();
+            String contens = FileCreate.readFile(namepath);
+            map.put("filecontent",contens);
+            map.put("filename",filemd.getFilename());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "file/readmd";
+
     }
 }
