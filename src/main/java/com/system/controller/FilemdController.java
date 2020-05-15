@@ -83,8 +83,9 @@ public class FilemdController {
         return "redirect:/main";
     }
 
-    @GetMapping(value = "seach/{fileid}")
-    public String seachFile(@PathVariable("fileid") String fileid){
+    @RequestMapping(value = "/seachFile")
+    @ResponseBody
+    public Map seachFile( String fileid){
         Filemd filemd = new Filemd();
         Map<String,String> map = new HashMap<>();
         try {
@@ -96,7 +97,7 @@ public class FilemdController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "file/readmd";
+        return map;
 
     }
 }

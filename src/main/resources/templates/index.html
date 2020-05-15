@@ -35,9 +35,7 @@
 		$(function() {
 			$.ajax({
 				url:'fileList',// 跳转到 action
-				// data:{
-				// 	userid:2
-				// },
+
 				type:'post',
 				cache:false,
 				dataType:'json',
@@ -45,7 +43,7 @@
 					var html ='';
 					for (var i = 0; i <data.length ; i++) {
 						html +='<div class="panel-body">';
-						html +='<h1><a href="seach/'+data[i].fileid+'"">'+data[i].filename+'</a></h1>';
+						html +='<h1><a href="jumpPage?vewpate=file/readmd&filemdid='+data[i].fileid+'"">'+data[i].filename+'</a></h1>';
 						html +='<p class="lead">'+data[i].filecontent+'</p>';
 						html +='<span >'+format(data[i].createtime)+'</span>&nbsp;&nbsp;';
 						html +='<a href="#" style="float:right;text-align:right">下载</a><span style="float:right;">&nbsp;&nbsp;</span><a href="#" style="float:right;text-align:right">编辑</a>'

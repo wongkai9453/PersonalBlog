@@ -17,4 +17,6 @@ public interface IFilemdService {
      * @date: 2020/5/12 0012 16:33
      */
     Filemd queryFilemed(String fileid) throws Exception;
+
+
 }
