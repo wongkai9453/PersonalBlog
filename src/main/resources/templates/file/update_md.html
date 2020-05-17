@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="common/common_html :: headtop"></div>
+</head>
+
+<body>
+<!-- WRAPPER -->
+<div id="wrapper">
+    <!-- NAVBAR -->
+
+    <div th:replace="common/common_html :: sidetree"></div>
+
+    <div th:replace="common/common_html :: leftmenu"></div>
+
+
+
+    <div class="main">
+        <form class="form-auth-small" action="index.php" th:action="@{/updateFile}" method="post">
+            <div style="height:10px"></div>
+            <div style="text-align:center;">
+                <input type="hidden" id = "filepath" name="filepath">
+                <input type="text" autocomplete="off" id = "filename" name = "filename" maxlength="100" placeholder="请输入文章标题" style="width: 95%;height:40px ">
+            </div>
+            <div style="height:10px"></div>
+            <div class="clearfix"></div>
+            <div id="test-editor">
+                <textarea style="display:none;" id = "filecontent" name = "filecontent"></textarea>
+            </div>
+            <div class="clearfix"></div>
+
+            <div >
+                <p class="demo-button">
+                    <button type="submit" style="display:block;margin:0 auto" class="btn btn-primary btn-toastr"
+                            data-context="info" data-message="This is general theme info"
+                            data-position="top-right" >发布</button>
+                </p>
+            </div>
+        </form>
+    </div>
+
+
+
+
+</div>
+
+
+<script th:inline="javascript">
+    var fileid = [[${filemdid}]];
+    console.log(fileid);
+    $(function() {
+        var editor = editormd("test-editor", {
+            width  : "95%",
+            height : "730",
+            path   : "editormd/lib/"
+        });
+        queryFile();
+    });
+
+    function queryFile() {
+        $.ajax({
+            url:'seachFile',// 跳转到 action
+            data:{fileid:fileid},
+            type:'post',
+            cache:false,
+            async:false,
+            dataType:'json',
+            success:function(data) {
+                console.log(data);
+                $('#filepath').val(data.filepath);
+                $('#filename').val(data.filename);
+                $("#filecontent").html(data.filecontent);
+            },
+            error : function() {
+
+                alert("异常！");
+            }
+        });
+    }
+</script>
+</body>
+
+</html>

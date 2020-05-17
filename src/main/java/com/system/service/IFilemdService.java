@@ -18,5 +18,14 @@ public interface IFilemdService {
      */
     Filemd queryFilemed(String fileid) throws Exception;
 
+    /**
+     * @Author wk
+     * @Description: 删除
+     * @Date 2020/5/17 9:33
+     * @Param: [fileid]
+     * @return: int
+     **/
+    int deleteByPrimaryKey(String fileid) throws Exception;
+
 
 }

@@ -33,7 +33,14 @@
     <script src="assets/vendor/chartist/js/chartist.min.js" th:src="@{/assets/vendor/chartist/js/chartist.min.js}"></script>
     <script src="assets/scripts/klorofil-common.js" th:src="@{/assets/scripts/klorofil-common.js}"></script>
     <script type="text/javascript">
-        var roolpath = "http://localhost:18085/wksoft/";
+        function format(date){
+            var datetime = new Date(date);
+            var	y = datetime.getFullYear();
+            var month  = datetime.getMonth()+1;
+            var	m = month<10?'0'+month:month;
+            var	d = datetime.getDate()<10?'0'+datetime.getDate():datetime.getDate();
+            return y+'年'+m+'月'+d+'日';
+        }
     </script>
 
 </head>
@@ -123,5 +130,4 @@
         </nav>
     </div>
 </div>
-
 </html>

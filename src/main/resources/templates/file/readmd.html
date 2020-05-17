@@ -74,12 +74,8 @@
 			async:false,
 			dataType:'json',
 			success:function(data) {
-				console.log(data.filecontent);
 				$('#filename').html(data.filename);
 				$("#filecontent").html(data.filecontent);
-
-
-
 			},
 			error : function() {
 

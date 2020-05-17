@@ -49,4 +49,9 @@ public class FilemdService implements IFilemdService {
     public Filemd queryFilemed(String fileid) throws Exception {
         return filemdMapper.selectByPrimaryKey(fileid);
     }
+
+    @Override
+    public int deleteByPrimaryKey(String fileid) {
+        return filemdMapper.deleteByPrimaryKey(fileid);
+    }
 }

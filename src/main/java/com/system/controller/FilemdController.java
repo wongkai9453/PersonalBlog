@@ -83,21 +83,40 @@ public class FilemdController {
         return "redirect:/main";
     }
 
+    /**
+     * @Author wk
+     * @Description: 显示数据信息
+     * @Date 2020/5/17 9:28
+     * @Param: [fileid]
+     * @return: java.util.Map
+     **/
     @RequestMapping(value = "/seachFile")
     @ResponseBody
-    public Map seachFile( String fileid){
+    public Map seachFile(String fileid){
         Filemd filemd = new Filemd();
         Map<String,String> map = new HashMap<>();
         try {
             filemd = iFilemdService.queryFilemed(fileid);
             String namepath = filemd.getFilepath();
             String contens = FileCreate.readFile(namepath);
+            map.put("filepath",filemd.getFilepath());
             map.put("filecontent",contens);
             map.put("filename",filemd.getFilename());
         } catch (Exception e) {
             e.printStackTrace();
         }
         return map;
-
+    }
+    @PostMapping(value = "/deleteFile")
+    @ResponseBody
+    public int deleteFile(String fileid,String filepath){
+        int del = 0;
+        try {
+            del = iFilemdService.deleteByPrimaryKey(fileid);
+            FileCreate.deleteFile(filepath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return del;
     }
 }
