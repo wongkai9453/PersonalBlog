@@ -6,7 +6,7 @@ spring:
   thymeleaf:
     cache: false #页面不产生缓存
   datasource:
-    url: jdbc:mysql://192.168.98.128:3306/study_sptb?serverTimezone=GMT&useSSL=false&characterEncoding=utf8
+    url: jdbc:mysql://192.168.95.130:3306/test?serverTimezone=GMT&useSSL=false&characterEncoding=utf8
     username: root
     password: wk123456
     driver-class-name: com.mysql.cj.jdbc.Driver
